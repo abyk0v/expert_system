@@ -1,0 +1,71 @@
+<div class="patient-management-layout">
+    <div>
+        <u><h4>Данные о пациенте:</h4></u>
+    </div>
+
+    <div class="row">
+        <div class="block-with-patient-fio">
+            <div class="input-block">
+                <span>Фамилия:</span>
+                <input type="text" [(ngModel)]="surname">
+            </div>
+
+            <div class="input-block">
+                <span>Имя:</span>
+                <input type="text" [(ngModel)]="name">
+            </div>
+
+            <div class="input-block">
+                <span>Возраст:</span>
+                <input type="number" [(ngModel)]="age">
+            </div>
+        </div>
+
+        <div class="blockSecond">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th colspan="2" class="header">Список симптомов:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="tr-row" *ngFor="let symptom of symptoms">
+                    <td>
+                        <input *ngIf="editingPatientSymptoms.has(symptom.id)" type="checkbox" checked
+                               (click)="checkedSymptom(symptom, false)">
+                        <input *ngIf="!editingPatientSymptoms.has(symptom.id)" type="checkbox"
+                               (click)="checkedSymptom(symptom, true)">
+                    </td>
+                    <td> {{ symptom.description }} </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="blockSecond">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="header">Список диагнозов:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="tr-row" *ngFor="let diagnosis of diagnoses; let i = index" (click)="diagnosisChecked(i)">
+                    <td [ngClass]="{'active-row': i == activeDiagnosis}">
+                        {{ diagnosis.description }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="buttonBlock">
+        <input *ngIf="activePatientId !== undefined" class="button" type="button" value="Обновить"
+            (click)="addPatient()">
+        <input *ngIf="activePatientId === undefined" class="button" type="button" value="Добавить"
+               (click)="addPatient()">
+        <input class="button" type="button" value="Отмена (Назад)"
+               routerLink="">
+    </div>
+</div>

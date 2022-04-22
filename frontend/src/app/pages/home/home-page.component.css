@@ -1,0 +1,62 @@
+.home-layout {
+    display: flex;
+    flex-direction: column;
+    margin: 3em;
+}
+
+.home-layout-block-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.block {
+    width: 30%;
+}
+
+/* Стиль для подцветки активной строки таблицы, тут: [ngClass]="{bold:patient.id == activeElement}" */
+.active-row {
+    background: WhiteSmoke;
+    font-weight: bold;
+}
+
+.blockSecond {
+    overflow-x: auto;
+    height: 40em;
+    width: 30%;
+    margin-left: 5em;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    text-align: center;
+}
+
+tr {
+    height: 3em;
+}
+
+.tr-row:hover {
+    background: Gainsboro;
+}
+
+.buttonBlock {
+    margin-top: 2em;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.button {
+    margin-right: 1.5em;
+}
+
+.header {
+    text-align: center
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}

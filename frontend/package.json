@@ -1,0 +1,29 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "Front for nstu expert system",
+  "author": "Aleksandr Bykov abyk0v@yandex.ru",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build"
+  },
+  "dependencies": {
+    "@angular/common": "~13.3.3",
+    "@angular/compiler": "~13.3.3",
+    "@angular/core": "~13.3.3",
+    "@angular/forms": "~13.3.3",
+    "@angular/platform-browser": "~13.3.3",
+    "@angular/platform-browser-dynamic": "~13.3.3",
+    "@angular/router": "~13.3.3",
+    "rxjs": "~7.4.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~13.3.3",
+    "@angular/cli": "~13.3.3",
+    "@angular/compiler-cli": "~13.3.3",
+    "@types/node": "~16.11.0",
+    "typescript": "~4.4.4"
+  }
+}

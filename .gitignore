@@ -1,0 +1,15 @@
+.gradle
+build/
+gradle/
+gradlew
+gradlew.bat
+
+
+### IntelliJ IDEA ###
+.idea
+
+
+### nodeModules
+./frontend/node_modules/
+./frontend/dist/
+./frontend/.angular/
