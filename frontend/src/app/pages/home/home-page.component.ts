@@ -1,6 +1,5 @@
-import {ChangeDetectorRef, Component} from "@angular/core";
-import {RestService} from "../../RestService";
-import {Patient} from "../../model/patient.model";
+import { Component } from "@angular/core";
+import { RestService } from "../../RestService";
 
 @Component({
     selector: 'home-page',
@@ -40,16 +39,15 @@ export class HomePageComponent {
         this.isCalculateButtonDisabled = this.patients[index] == undefined;
     }
 
-    addPatient(): void {
-        console.log("addPatient()");
-        // this.restServce.getPatientList().subscribe((data) => {
-        //     this.patients = data;
-        //     console.log(this.patients);
-        //     // this.patientsForRendering = this.listPatients;
-        // })
-    }
-
     patientDelete(): void {
-
+        this.restService.deletePatientById(this.activePatientId).subscribe((data) => {
+            console.log('before delete:' + this.patients);
+            // console.log('patientDelete():' + data);
+            let delIndex = this.patients.findIndex(item => {
+                return item.id === this.activePatientId
+            });
+            this.patients.splice(delIndex, 1);
+            console.log('after delete: ' + this.patients);
+        })
     }
 }

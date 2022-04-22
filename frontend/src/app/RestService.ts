@@ -54,7 +54,12 @@ export class RestService {
             '?patient_id=' + patientId);
     }
 
-    postPatient(savePatient: NewPatientToServer): void {
-        this.http.post(this.apiUrls.base + this.apiUrls.patient, savePatient);
+    postPatient(savePatient: NewPatientToServer): Observable<NewPatientToServer> {
+        return this.http.post<NewPatientToServer>(this.apiUrls.base + this.apiUrls.patient, savePatient);
+    }
+
+    deletePatientById(patientId: number): Observable<any> {
+        return this.http.delete<string>(this.apiUrls.base + this.apiUrls.patientById +
+            '?patient_id=' + patientId);
     }
 }
