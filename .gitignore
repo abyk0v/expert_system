@@ -10,6 +10,6 @@ gradlew.bat
 
 
 ### nodeModules
-./frontend/node_modules/
-./frontend/dist/
-./frontend/.angular/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
