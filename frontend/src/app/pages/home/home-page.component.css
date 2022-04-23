@@ -1,7 +1,8 @@
 .home-layout {
     display: flex;
     flex-direction: column;
-    margin: 3em;
+    padding: 3em;
+    min-height: 100vh;
 }
 
 .home-layout-block-row {
@@ -43,9 +44,7 @@ tr {
 }
 
 .buttonBlock {
-    margin-top: 2em;
-    display: flex;
-    justify-content: flex-start;
+    margin-top: auto;
 }
 
 .button {

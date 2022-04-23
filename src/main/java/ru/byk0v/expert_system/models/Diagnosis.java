@@ -44,4 +44,9 @@ public class Diagnosis {
     public Diagnosis(String description) {
         this.description = description;
     }
+
+    public Diagnosis(DiagnosisDto diagnosisDto) {
+        this.id = diagnosisDto.getId();
+        this.description = diagnosisDto.getDescription();
+    }
 }

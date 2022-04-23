@@ -84,14 +84,20 @@ export class PatientManagementComponent {
         for (let item of this.editingPatientSymptoms.values()) {
             saveSymptoms.push(item);
         }
+        console.log(saveSymptoms);
 
         let newPatientToServer = new NewPatientToServer();
         newPatientToServer.patient = savePatient;
         newPatientToServer.diagnosis = this.diagnoses[this.activeDiagnosis];
         newPatientToServer.symptoms = saveSymptoms;
 
+        console.log(newPatientToServer);
+
         console.log('this.restService.postPatient(newPatientToServer);');
-        this.restService.postPatient(newPatientToServer);
+        this.restService.postPatient(newPatientToServer).subscribe((data) => {
+            console.log('SUCCESS!!');
+            console.log(data);
+        })
     }
 
     diagnosisChecked(index: number): void {

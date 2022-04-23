@@ -79,8 +79,22 @@ public class MainController {
 
     @PostMapping("/patient")
     public PatientDto addPatient(@RequestBody PationAddRequest pationAddRequest) {
-        System.out.println("-------------------------------------------------------------");
-        System.out.println(pationAddRequest);
+        Patient savePatient = new Patient();
+        savePatient.setId(pationAddRequest.getPatient().getId());
+        savePatient.setName(pationAddRequest.getPatient().getName());
+        savePatient.setSurname(pationAddRequest.getPatient().getSurname());
+        savePatient.setAge(pationAddRequest.getPatient().getAge());
+
+        savePatient.addDiagnosis(new Diagnosis(pationAddRequest.getDiagnosis()));
+        savePatient.setSymptoms(Mappers.SymptomDtoToSymptom(pationAddRequest.getSymptoms()));
+
+        patientRepository.save(savePatient);
         return null;
+    }
+
+    @DeleteMapping("/patient")
+    public String delete(@RequestParam("patient_id") Integer patient_id) {
+        patientRepository.deleteById(patient_id);
+        return "Success";
     }
 }
