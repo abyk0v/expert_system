@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { RestService } from "../../RestService";
+import {Diagnosis} from "../../model/diagnosis.model";
 
 @Component({
     selector: 'home-page',
@@ -10,6 +11,7 @@ import { RestService } from "../../RestService";
 export class HomePageComponent {
     patients = [];
     patientSymptoms = [];
+    activePatientDiagnosis: Diagnosis;
 
     activeElement: number = -1;
     activePatientId: number = -1;
@@ -35,19 +37,27 @@ export class HomePageComponent {
             this.patientSymptoms.push(...data);
         })
 
+        this.restService.getDiagnosisForPatientById(this.patients[index].id).subscribe((data) => {
+            this.activePatientDiagnosis = data;
+        })
+
         this.isEditButtonDisabled = this.patients[index] == undefined;
         this.isCalculateButtonDisabled = this.patients[index] == undefined;
     }
 
     patientDelete(): void {
         this.restService.deletePatientById(this.activePatientId).subscribe((data) => {
-            console.log('before delete:' + this.patients);
-            // console.log('patientDelete():' + data);
             let delIndex = this.patients.findIndex(item => {
                 return item.id === this.activePatientId
             });
             this.patients.splice(delIndex, 1);
-            console.log('after delete: ' + this.patients);
+
+            this.activeElement = -1;
+            this.activePatientId = undefined;
+            this.activePatientDiagnosis = undefined;
+            this.patientSymptoms = [];
+            this.isEditButtonDisabled = true;
+            this.isCalculateButtonDisabled = true;
         })
     }
 }

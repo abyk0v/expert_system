@@ -33,6 +33,21 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="blockSecond">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="header">Установленный диагноз:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngIf="activePatientDiagnosis !== undefined">
+                    <td> {{ activePatientDiagnosis.description }} </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="buttonBlock">

@@ -1,6 +1,8 @@
 package ru.byk0v.expert_system;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.byk0v.expert_system.models.*;
 import ru.byk0v.expert_system.repositories.DiagnosisRepository;
@@ -93,8 +95,8 @@ public class MainController {
     }
 
     @DeleteMapping("/patient")
-    public String delete(@RequestParam("patient_id") Integer patient_id) {
+    public Responce delete(@RequestParam("patient_id") Integer patient_id) {
         patientRepository.deleteById(patient_id);
-        return "Success";
+        return new Responce("SUCCESS");
     }
 }
