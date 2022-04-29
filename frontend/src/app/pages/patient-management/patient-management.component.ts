@@ -110,11 +110,23 @@ export class PatientManagementComponent {
         }
     }
 
-    checkedSymptom(symptom: Symptom, checked: Boolean) {
+    checkedSymptom(symptom: Symptom, checked: Boolean): void {
         if (checked) {
             this.editingPatientSymptoms.set(symptom.id, symptom);
         } else {
             this.editingPatientSymptoms.delete(symptom.id);
+        }
+    }
+
+    isCalculateDisabled(): boolean {
+        return this.editingPatientSymptoms.size == 0;
+    }
+
+    calculate(): void {
+        console.log('calculate(): void {}')
+        if (this.symptoms.length == 0) {
+            console.log('Список симптомов пуст. Выберите симптомы!');
+            return;
         }
     }
 }

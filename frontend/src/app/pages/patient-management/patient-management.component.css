@@ -5,18 +5,19 @@
     min-height: 100vh;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    margin-top: 3em;
+    height: 30em;
+}
+
 .block-with-patient-fio {
     margin-top: 1em;
     width: 20%;
 }
 
-.row {
-    display: flex;
-    flex-direction: row;
-    margin-top: 3em;
-}
-
-.blockSecond {
+.another-block {
     overflow-x: auto;
     height: 30em;
     width: 25%;
@@ -35,7 +36,7 @@ tr {
     height: 3em;
 }
 
-.buttonBlock {
+.button-block {
     margin-top: auto;
 }
 
@@ -51,4 +52,9 @@ tr {
 
 .tr-row:hover {
     background: Gainsboro;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
 }

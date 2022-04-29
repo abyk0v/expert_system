@@ -1,17 +1,22 @@
 <div class="home-layout">
-    <div class="home-layout-block-row">
-        <div class="block">
+    <div>
+        <u><h4>Главная страница:</h4></u>
+    </div>
+
+    <div class="row">
+        <div class="list-patients-block">
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="header">Список пациентов:</th>
+                        <th colspan="2" class="header">Список пациентов:</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="tr-row" *ngFor="let patient of patients; let i = index" (click)="click(i)">
                         <td [ngClass]="{'active-row': i == activeElement}">
                             <strong>{{i+1}}</strong>
-                            <span>__{{ patient.id }}__</span>
+                        </td>
+                        <td [ngClass]="{'active-row': i == activeElement}">
                             {{ patient.name }} {{ patient.surname }} {{ patient.age }}
                         </td>
                     </tr>
@@ -19,7 +24,7 @@
             </table>
         </div>
 
-        <div class="blockSecond">
+        <div class="another-block">
             <table class="table">
                 <thead>
                 <tr>
@@ -34,7 +39,7 @@
             </table>
         </div>
 
-        <div class="blockSecond">
+        <div class="another-block">
             <table class="table">
                 <thead>
                 <tr>
@@ -50,14 +55,12 @@
         </div>
     </div>
 
-    <div class="buttonBlock">
+    <div class="button-block">
         <input class="button" type="button" value="Добавить"
                routerLink="/patient-management">
         <input class="button" type="button" value="Редактировать"
                [class.disabled]="isEditButtonDisabled"
                [routerLink]="['/patient-management', activePatientId]">
-        <input class="button" type="button" value="Рассчитать вероятности"
-               [class.disabled]="isCalculateButtonDisabled">
         <input class="button" type="button" value="Удалить пациента"
                [class.disabled]="isEditButtonDisabled" (click)="patientDelete()">
     </div>

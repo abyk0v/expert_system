@@ -5,13 +5,17 @@
     min-height: 100vh;
 }
 
-.home-layout-block-row {
+.row {
     display: flex;
     flex-direction: row;
+    margin-top: 3em;
+    height: 30em;
 }
 
-.block {
-    width: 30%;
+.list-patients-block {
+    overflow-x: auto;
+    height: 30em;
+    width: 25%;
 }
 
 /* Стиль для подцветки активной строки таблицы, тут: [ngClass]="{bold:patient.id == activeElement}" */
@@ -20,11 +24,11 @@
     font-weight: bold;
 }
 
-.blockSecond {
+.another-block {
     overflow-x: auto;
-    height: 40em;
+    height: 30em;
     width: 25%;
-    margin-left: 5em;
+    margin-left: 4em;
 }
 
 table {
@@ -43,7 +47,7 @@ tr {
     background: Gainsboro;
 }
 
-.buttonBlock {
+.button-block {
     margin-top: auto;
 }
 

@@ -1,6 +1,6 @@
 <div class="patient-management-layout">
     <div>
-        <u><h4>Данные о пациенте:</h4></u>
+        <u><h4>Добавление/редактирование пациента:</h4></u>
     </div>
 
     <div class="row">
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="blockSecond">
+        <div class="another-block">
             <table class="table">
                 <thead>
                 <tr>
@@ -42,7 +42,7 @@
             </table>
         </div>
 
-        <div class="blockSecond">
+        <div class="another-block">
             <table class="table">
                 <thead>
                 <tr>
@@ -60,12 +60,15 @@
         </div>
     </div>
 
-    <div class="buttonBlock">
-        <input *ngIf="activePatientId !== undefined" class="button" type="button" value="Обновить"
-            (click)="addPatient()">
-        <input *ngIf="activePatientId === undefined" class="button" type="button" value="Добавить"
-               (click)="addPatient()">
+    <div class="button-block">
         <input class="button" type="button" value="Отмена (Назад)"
                routerLink="">
+        <input *ngIf="activePatientId !== undefined" class="button" type="button" value="Обновить (save)"
+               (click)="addPatient()">
+        <input *ngIf="activePatientId === undefined" class="button" type="button" value="Добавить (save)"
+               (click)="addPatient()">
+
+        <input class="button" type="button" value="Рассчитать диагноз"
+               [class.disabled]="isCalculateDisabled()" (click)="calculate()">
     </div>
 </div>

@@ -16,7 +16,6 @@ export class HomePageComponent {
     activeElement: number = -1;
     activePatientId: number = -1;
     isEditButtonDisabled: boolean = true;
-    isCalculateButtonDisabled: boolean = true;
 
     constructor(private restService: RestService) {
 
@@ -42,7 +41,6 @@ export class HomePageComponent {
         })
 
         this.isEditButtonDisabled = this.patients[index] == undefined;
-        this.isCalculateButtonDisabled = this.patients[index] == undefined;
     }
 
     patientDelete(): void {
@@ -57,7 +55,6 @@ export class HomePageComponent {
             this.activePatientDiagnosis = undefined;
             this.patientSymptoms = [];
             this.isEditButtonDisabled = true;
-            this.isCalculateButtonDisabled = true;
         })
     }
 }
