@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     padding: 3em;
+    width: 93vw;
     min-height: 100vh;
 }
 
@@ -57,4 +58,12 @@ tr {
 .disabled {
     opacity: 0.5;
     pointer-events: none;
+}
+
+/* TODO вынести в свой компонент ---------------------------------------------------------------- */
+
+.page-layout {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
 }

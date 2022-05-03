@@ -10,6 +10,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {CalculateModalComponent} from "./modals/calculate-diagnosis/calculate-modal.component";
 import {HttpService} from "./HttpService";
 import {ModalService} from "./ModalService";
+import {SideMenuComponent} from "./components/side-menu/side-menu.component";
 
 // определение маршрутов
 const appRoutes: Routes =[
@@ -21,7 +22,8 @@ const appRoutes: Routes =[
 
 @NgModule({
     imports:      [ BrowserModule, FormsModule, HttpClientModule, RouterModule.forRoot(appRoutes) ],
-    declarations: [ AppComponent, HomePageComponent, PatientManagementComponent, CalculateModalComponent ],
+    declarations: [ AppComponent, HomePageComponent, PatientManagementComponent, CalculateModalComponent,
+        SideMenuComponent ],
     bootstrap:    [ AppComponent ],
     providers:    [ HttpService, ModalService ]
 })
