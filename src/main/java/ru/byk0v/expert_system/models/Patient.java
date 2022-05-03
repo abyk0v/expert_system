@@ -71,14 +71,14 @@ public class Patient {
         diagnoses.add(diagnosis);
     }
 
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", age=" + age +
-                ", diagnoses=" + diagnoses +
-                ", symptoms=" + symptoms +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Patient{" +
+//                "name='" + name + '\'' +
+//                ", surname='" + surname + '\'' +
+//                ", age=" + age +
+//                ", diagnoses=" + diagnoses +
+//                ", symptoms=" + symptoms +
+//                '}';
+//    }
 }

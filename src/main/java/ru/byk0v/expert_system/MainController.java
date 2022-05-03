@@ -23,6 +23,8 @@ public class MainController {
     private SymptomRepository symptomRepository;
     private DiagnosisRepository diagnosisRepository;
 
+    private CalculateService calculateService;
+
     @GetMapping("/patients")
     public List<PatientDto> getAllPatient() {
         List<Patient> entity = patientRepository.findAll();
@@ -98,5 +100,10 @@ public class MainController {
     public Responce delete(@RequestParam("patient_id") Integer patient_id) {
         patientRepository.deleteById(patient_id);
         return new Responce("SUCCESS");
+    }
+
+    @PostMapping("/calculate")
+    public CalculateResponce calculate(@RequestBody CalculateRequest request) {
+        return calculateService.calculate(request);
     }
 }

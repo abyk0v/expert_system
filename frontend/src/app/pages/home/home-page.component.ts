@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
-import { RestService } from "../../RestService";
+import { HttpService } from "../../HttpService";
 import {Diagnosis} from "../../model/diagnosis.model";
 
 @Component({
     selector: 'home-page',
     styleUrls: ['./home-page.component.css'],
     templateUrl: './home-page.component.html',
-    providers: [RestService]
+    providers: [HttpService]
 })
 export class HomePageComponent {
     patients = [];
@@ -17,7 +17,7 @@ export class HomePageComponent {
     activePatientId: number = -1;
     isEditButtonDisabled: boolean = true;
 
-    constructor(private restService: RestService) {
+    constructor(private restService: HttpService) {
 
         this.restService.getPatientList().subscribe((data) => {
             this.patients.splice(0); // empty the array, without reassigning it
