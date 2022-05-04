@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {HttpService} from "../../HttpService";
+import {HttpService} from "../../http.service";
 import {Symptom} from "../../model/symptom.model";
 import {Diagnosis} from "../../model/diagnosis.model";
 

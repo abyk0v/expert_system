@@ -1,10 +1,11 @@
 import {Component} from "@angular/core";
-import {HttpService} from "../../HttpService";
+import {HttpService} from "../../http.service";
 import {ActivatedRoute} from "@angular/router";
 import {Patient} from "../../model/patient.model";
 import {Symptom} from "../../model/symptom.model";
 import {NewPatientToServer} from "../../model/new-patient.model";
-import {ModalService} from "../../ModalService";
+import {ModalService} from "../../modal.service";
+import {NotificationService} from "../../notification.service";
 
 @Component({
     selector: 'patient-management',
@@ -29,8 +30,12 @@ export class PatientManagementComponent {
 
     constructor(private activateRoute: ActivatedRoute,
                 private restService: HttpService,
-                private modalService: ModalService) {
+                private modalService: ModalService,
+                private notificationService: NotificationService) {
         this.activePatientId = activateRoute.snapshot.params['id'];
+
+        this.notificationService.success("Диагноз успешно рассчитан - 1");
+        this.notificationService.error("Диагноз успешно рассчитан - 2");
 
         this.restService.getDiagnosesList().subscribe((data) => {
             this.diagnoses.splice(0);

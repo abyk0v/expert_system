@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { HttpService } from "../../HttpService";
+import { HttpService } from "../../http.service";
 import {Diagnosis} from "../../model/diagnosis.model";
 
 @Component({
