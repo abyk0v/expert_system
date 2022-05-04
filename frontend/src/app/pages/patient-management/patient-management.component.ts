@@ -1,11 +1,12 @@
 import {Component} from "@angular/core";
 import {HttpService} from "../../http.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Patient} from "../../model/patient.model";
 import {Symptom} from "../../model/symptom.model";
 import {NewPatientToServer} from "../../model/new-patient.model";
 import {ModalService} from "../../modal.service";
 import {NotificationService} from "../../notification.service";
+import {StoreService} from "../../store.service";
 
 @Component({
     selector: 'patient-management',
@@ -28,14 +29,17 @@ export class PatientManagementComponent {
     name: string = '';
     age: number;
 
-    constructor(private activateRoute: ActivatedRoute,
+    constructor(private storeService: StoreService,
+                private activateRoute: ActivatedRoute,
+                private router: Router,
                 private restService: HttpService,
                 private modalService: ModalService,
                 private notificationService: NotificationService) {
         this.activePatientId = activateRoute.snapshot.params['id'];
 
-        this.notificationService.success("Диагноз успешно рассчитан - 1");
-        this.notificationService.error("Диагноз успешно рассчитан - 2");
+        if (this.storeService.getIsInitLoading()) {
+            this.notificationService.success("Приложение готово к работе");
+        }
 
         this.restService.getDiagnosesList().subscribe((data) => {
             this.diagnoses.splice(0);
@@ -93,12 +97,17 @@ export class PatientManagementComponent {
         newPatientToServer.diagnosis = this.diagnoses[this.activeDiagnosis];
         newPatientToServer.symptoms = saveSymptoms;
 
-        console.log(newPatientToServer);
-
-        console.log('this.restService.postPatient(newPatientToServer);');
         this.restService.postPatient(newPatientToServer).subscribe((data) => {
-            console.log('SUCCESS!!');
-            console.log(data);
+            if (this.activePatientId != undefined) {
+                this.notificationService.success('Пациент успешно обновлен')
+            } else {
+                this.notificationService.success('Пациент успешно добавлен')
+            }
+            // Вернемся на главный экран
+            this.router.navigate(['']);
+
+        }, error => {
+            this.notificationService.error('Что-то пошло не так')
         })
     }
 

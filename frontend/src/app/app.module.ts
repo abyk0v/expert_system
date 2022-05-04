@@ -12,8 +12,10 @@ import {HttpService} from "./http.service";
 import {ModalService} from "./modal.service";
 import {SideMenuComponent} from "./components/side-menu/side-menu.component";
 import {NotificationComponent} from "./components/notification/notification.component";
-import {SnotifyModule, SnotifyService, ToastDefaults} from "ng-snotify";
 import {NotificationService} from "./notification.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ToastrModule} from "ngx-toastr";
+import {StoreService} from "./store.service";
 
 // определение маршрутов
 const appRoutes: Routes =[
@@ -24,11 +26,11 @@ const appRoutes: Routes =[
 ];
 
 @NgModule({
-    imports:      [ BrowserModule, FormsModule, HttpClientModule, RouterModule.forRoot(appRoutes), SnotifyModule ],
+    imports:      [ BrowserModule, FormsModule, HttpClientModule, RouterModule.forRoot(appRoutes),
+        BrowserAnimationsModule, ToastrModule.forRoot() ],
     declarations: [ AppComponent, HomePageComponent, PatientManagementComponent, CalculateModalComponent,
         SideMenuComponent, NotificationComponent ],
     bootstrap:    [ AppComponent ],
-    providers:    [ HttpService, ModalService, NotificationService,
-        { provide: 'SnotifyToastConfig', useValue: ToastDefaults}, SnotifyService]
+    providers:    [ StoreService, HttpService, ModalService, NotificationService]
 })
 export class AppModule { }
