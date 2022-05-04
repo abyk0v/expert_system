@@ -1,0 +1,24 @@
+<div class="external-block">
+    <div class="side-block">
+        <div class="block main-block text-center"
+             [ngClass]="{'active-block': activePage === 'home'}"
+             routerLink=""
+             (click)="mainBlockClick()">
+            <p>Main page</p>
+        </div>
+        <div class="block add-edit-patient-block text-center"
+             [ngClass]="{'active-block': activePage === 'patient-management'}"
+             routerLink="/patient-management"
+             (click)="addAndEditPatientBlockClick()">
+            <p>add/edit patient</p>
+        </div>
+        <div class="disabled block add-edit-diagnosis-symptom-block text-center"
+             (click)="addAndEditDiagnosisAndSympomBlockClick()">
+            <p>add/edit diagnosis & symp.</p>
+        </div>
+        <div class="disabled block help-block  text-center"
+             (click)="helpBlockClick()">
+            <p>Help</p>
+        </div>
+    </div>
+</div>

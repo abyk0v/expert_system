@@ -1,0 +1,40 @@
+<div class="calculate-dialog-layout">
+    <div class="modal-header">
+        <h4>Автоматическое определение диагноза</h4>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="isloading">
+            Загрузка...
+        </div>
+        <div *ngIf="!isloading">
+            Рассчитанный диагноз: {{ this.calculateDiagnoses[0].description }}
+            , с вероятностью = {{ this.calculateDiagnoses[0].probability.toPrecision(2) }}
+        </div>
+
+        <div>
+            <input type="button" (click)="detail()" value="{{detailRenderText}}">
+
+            <table *ngIf="isDetail" class="table">
+                <thead>
+                <tr>
+                    <th class="header">№</th>
+                    <th class="header">Название диагноза</th>
+                    <th class="header">Вероятность</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let diagnosis of calculateDiagnoses; let i = index">
+                    <td> {{i+1}} </td>
+                    <td> {{ diagnosis.description }} </td>
+                    <td> {{ diagnosis.probability.toPrecision(2) }} </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-center">
+        <input type="button" (click)="accept()" value="Подтвердить"
+               [class.disabled]="isAcceptDisabled()">
+        <input type="button" (click)="cancel()" value="Отмена">
+    </div>
+</div>

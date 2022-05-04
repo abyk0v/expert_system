@@ -1,0 +1,13 @@
+/*TODO Не работает, подумать над этим*/
+.calculate-dialog-layout {
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*padding: 3em;*/
+    min-height: 25vh;
+    min-width: 25vw;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}

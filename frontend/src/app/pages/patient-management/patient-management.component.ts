@@ -1,15 +1,17 @@
 import {Component} from "@angular/core";
-import {RestService} from "../../RestService";
+import {HttpService} from "../../http.service";
 import {ActivatedRoute} from "@angular/router";
 import {Patient} from "../../model/patient.model";
 import {Symptom} from "../../model/symptom.model";
 import {NewPatientToServer} from "../../model/new-patient.model";
+import {ModalService} from "../../modal.service";
+import {NotificationService} from "../../notification.service";
 
 @Component({
     selector: 'patient-management',
     styleUrls: ['./patient-management.component.css'],
     templateUrl: './patient-management.component.html',
-    providers: [RestService]
+    providers: [HttpService, ModalService]
 })
 export class PatientManagementComponent {
     activePatientId: number;
@@ -27,8 +29,13 @@ export class PatientManagementComponent {
     age: number;
 
     constructor(private activateRoute: ActivatedRoute,
-                private restService: RestService) {
+                private restService: HttpService,
+                private modalService: ModalService,
+                private notificationService: NotificationService) {
         this.activePatientId = activateRoute.snapshot.params['id'];
+
+        this.notificationService.success("Диагноз успешно рассчитан - 1");
+        this.notificationService.error("Диагноз успешно рассчитан - 2");
 
         this.restService.getDiagnosesList().subscribe((data) => {
             this.diagnoses.splice(0);
@@ -79,12 +86,7 @@ export class PatientManagementComponent {
             savePatient = new Patient(null, this.name, this.surname, this.age);
         }
 
-        // Запоминаем симптомы
-        let saveSymptoms: Symptom[] = [];
-        for (let item of this.editingPatientSymptoms.values()) {
-            saveSymptoms.push(item);
-        }
-        console.log(saveSymptoms);
+        let saveSymptoms = this.getCheckedSymptoms();
 
         let newPatientToServer = new NewPatientToServer();
         newPatientToServer.patient = savePatient;
@@ -110,11 +112,53 @@ export class PatientManagementComponent {
         }
     }
 
-    checkedSymptom(symptom: Symptom, checked: Boolean) {
+    checkedSymptom(symptom: Symptom, checked: Boolean): void {
         if (checked) {
             this.editingPatientSymptoms.set(symptom.id, symptom);
         } else {
             this.editingPatientSymptoms.delete(symptom.id);
         }
+    }
+
+    isCalculateDisabled(): boolean {
+        return this.editingPatientSymptoms.size == 0;
+    }
+
+    calculate(): void {
+        console.log('calculate(): void {}')
+        if (this.symptoms.length == 0) {
+            console.log('Список симптомов пуст. Выберите симптомы!');
+            return;
+        }
+
+        this.modalService.calculateDialog(this.activePatientId, this.getCheckedSymptoms()).subscribe(data => {
+            // TODO добавить больше данных
+            if (data !== null && data !== undefined) {
+                // console.log('modalService.calculateDialog()');
+                // data.forEach(item => {
+                //     console.log(item);
+                // })
+                let idСalculatedDiagnosis = data[0].id;
+                this.activeDiagnosis = this.diagnoses.findIndex((element, index, array) => {
+                    if (element.id === idСalculatedDiagnosis) {
+                        return true;
+                        console.log('new index for active diagnosis: ' + index);
+                    }
+                    return false;
+                })
+
+            } else {
+                // console.log('modalService.calculateDialog(): ' + null);
+            }
+        })
+    }
+
+    // Получить выбранные симптомы
+    private getCheckedSymptoms(): Symptom[] {
+        let saveSymptoms: Symptom[] = [];
+        for (let item of this.editingPatientSymptoms.values()) {
+            saveSymptoms.push(item);
+        }
+        return saveSymptoms;
     }
 }

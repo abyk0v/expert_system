@@ -11,6 +11,9 @@ public class DiagnosisDto {
 
     private String description;
 
+    // Вероятность диагноза
+    private Double probability = 0.5;
+
     public DiagnosisDto(Diagnosis diagnosis) {
         this.id = diagnosis.getId();
         this.description = diagnosis.getDescription();

@@ -1,5 +1,7 @@
 package ru.byk0v.expert_system;
 
+import ru.byk0v.expert_system.models.Diagnosis;
+import ru.byk0v.expert_system.models.DiagnosisDto;
 import ru.byk0v.expert_system.models.Symptom;
 import ru.byk0v.expert_system.models.SymptomDto;
 
@@ -21,5 +23,12 @@ public class Mappers {
         symptom.setId(symptomDto.getId());
         symptom.setDescription(symptomDto.getDescription());
         return symptom;
+    }
+
+    public static DiagnosisDto diagnosisToDiagnosisDto(Diagnosis diagnosis) {
+        DiagnosisDto diagnosisDto = new DiagnosisDto();
+        diagnosisDto.setId(diagnosis.getId());
+        diagnosisDto.setDescription(diagnosis.getDescription());
+        return diagnosisDto;
     }
 }

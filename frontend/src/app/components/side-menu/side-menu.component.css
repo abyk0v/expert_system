@@ -1,0 +1,59 @@
+.external-block {
+    padding-top: 3em;
+    padding-bottom: 3em;
+    min-height: 100vh;
+    height: 1px;
+    width: 7vw;
+}
+
+.side-block {
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid black;
+    height: 100%;
+}
+
+.block {
+    cursor: pointer;
+    height: 5em;
+    border: 2px solid black;
+    background: WhiteSmoke;
+}
+
+.main-block {
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.add-edit-patient-block {
+    margin-top: 1em;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.add-edit-diagnosis-symptom-block {
+    margin-top: 1em;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.help-block {
+    margin: auto 1em 0em 1em;
+}
+
+p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+}
+
+.active-block {
+    background: gainsboro;
+    font-weight: bold;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
