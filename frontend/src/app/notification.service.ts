@@ -1,17 +1,21 @@
 import {Injectable} from "@angular/core";
-import {SnotifyService} from "ng-snotify";
+import {ToastrService} from "ngx-toastr";
 
 @Injectable()
 export class NotificationService {
 
-    constructor(private snotifyService: SnotifyService) {
+    constructor(private toastr: ToastrService) {
     }
 
     success(message: string): void {
-        this.snotifyService.success(message);
+        this.toastr.success(message);
+        // this.toastr.warning('Test', 'Title');
+        // this.toastr.error('Test');
+        // this.toastr.info('Test');
+        // this.toastr.show('Test');
     }
 
     error(message: string): void {
-        this.snotifyService.error(message);
+        this.toastr.error(message);
     }
 }

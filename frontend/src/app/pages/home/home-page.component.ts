@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { HttpService } from "../../http.service";
 import {Diagnosis} from "../../model/diagnosis.model";
+import {NotificationService} from "../../notification.service";
+import {StoreService} from "../../store.service";
 
 @Component({
     selector: 'home-page',
@@ -17,13 +19,23 @@ export class HomePageComponent {
     activePatientId: number = -1;
     isEditButtonDisabled: boolean = true;
 
-    constructor(private restService: HttpService) {
+    constructor(private storeService: StoreService,
+                private restService: HttpService,
+                private notificationService: NotificationService) {
 
-        this.restService.getPatientList().subscribe((data) => {
+        this.restService.getPatientList().subscribe(
+            (data) => {
             this.patients.splice(0); // empty the array, without reassigning it
             this.patients.push(...data);
             console.log(this.patients);
-        })
+
+            if (this.storeService.getIsInitLoading()) {
+                this.notificationService.success("Приложение готово к работе");
+            }
+        },
+            error => {
+                this.notificationService.error("Нет связи с сервером");
+            })
     }
 
     click(index): void {
@@ -55,6 +67,10 @@ export class HomePageComponent {
             this.activePatientDiagnosis = undefined;
             this.patientSymptoms = [];
             this.isEditButtonDisabled = true;
+
+            this.notificationService.success('Пациент удален');
+        }, error => {
+            this.notificationService.success('Ошибка при удалении пациента');
         })
     }
 }
