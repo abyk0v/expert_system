@@ -7,14 +7,13 @@ import {Diagnosis} from "./model/diagnosis.model";
 import {NewPatientToServer} from "./model/new-patient.model";
 import {Response} from "./model/response.model";
 import {CalculateRequestModel} from "./model/calculate-request.model";
-import {syncBuiltinESMExports} from "module";
 import {CalculateResponceModel} from "./model/calculate-responce.model";
 
 @Injectable()
 export class HttpService {
 
     protected apiUrls = {
-        base: 'http://localhost:8080',
+        base: 'https://bykov-expert-system.herokuapp.com',
         patientList: '/patients',
         patientById: '/patient',
         symptomList: '/symptoms',
