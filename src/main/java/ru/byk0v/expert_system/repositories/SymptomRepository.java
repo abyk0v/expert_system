@@ -3,6 +3,7 @@ package ru.byk0v.expert_system.repositories;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import ru.byk0v.expert_system.models.Diagnosis;
 import ru.byk0v.expert_system.models.Patient;
 import ru.byk0v.expert_system.models.Symptom;
 
@@ -33,4 +34,10 @@ public interface SymptomRepository extends CrudRepository<Symptom, Integer> {
             "on patient_symptom.id_p = ?1 and symptom.id = patient_symptom.id_s",
             nativeQuery = true)
     public List<Symptom> findAllForPatient(Integer patient_id);
+
+    @Query(value = "select id, description " +
+            "from symptom join diagnosis_symptom " +
+            "on diagnosis_symptom.id_d = ?1 and symptom.id = diagnosis_symptom.id_s",
+            nativeQuery = true)
+    public List<Symptom> findAllForDiagnosis(Integer diagnosis_id);
 }

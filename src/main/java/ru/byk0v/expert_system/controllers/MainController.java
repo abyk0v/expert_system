@@ -1,10 +1,28 @@
-package ru.byk0v.expert_system;
+package ru.byk0v.expert_system.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.byk0v.expert_system.models.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import ru.byk0v.expert_system.CalculateService;
+import ru.byk0v.expert_system.Mappers;
+import ru.byk0v.expert_system.models.CalculateRequest;
+import ru.byk0v.expert_system.models.CalculateResponce;
+import ru.byk0v.expert_system.models.Diagnosis;
+import ru.byk0v.expert_system.models.DiagnosisDto;
+import ru.byk0v.expert_system.models.Patient;
+import ru.byk0v.expert_system.models.PatientDto;
+import ru.byk0v.expert_system.models.PationAddRequest;
+import ru.byk0v.expert_system.models.Responce;
+import ru.byk0v.expert_system.models.Symptom;
+import ru.byk0v.expert_system.models.SymptomDto;
 import ru.byk0v.expert_system.repositories.DiagnosisRepository;
 import ru.byk0v.expert_system.repositories.PatientRepository;
 import ru.byk0v.expert_system.repositories.SymptomRepository;
@@ -88,8 +106,7 @@ public class MainController {
         savePatient.setName(pationAddRequest.getPatient().getName());
         savePatient.setSurname(pationAddRequest.getPatient().getSurname());
         savePatient.setAge(pationAddRequest.getPatient().getAge());
-
-        savePatient.addDiagnosis(new Diagnosis(pationAddRequest.getDiagnosis()));
+        savePatient.setDiagnosis(new Diagnosis(pationAddRequest.getDiagnosis()));
         savePatient.setSymptoms(Mappers.SymptomDtoToSymptom(pationAddRequest.getSymptoms()));
 
         patientRepository.save(savePatient);

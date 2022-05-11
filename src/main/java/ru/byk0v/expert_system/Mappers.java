@@ -28,6 +28,7 @@ public class Mappers {
     public static DiagnosisDto diagnosisToDiagnosisDto(Diagnosis diagnosis) {
         DiagnosisDto diagnosisDto = new DiagnosisDto();
         diagnosisDto.setId(diagnosis.getId());
+        diagnosisDto.setName(diagnosis.getName());
         diagnosisDto.setDescription(diagnosis.getDescription());
         return diagnosisDto;
     }

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface PatientRepository extends CrudRepository<Patient, Integer> {
 
-    @Query(value = "select id, name, surname, age " +
+    @Query(value = "select id, name, surname, age, diagnosis " +
             "from Patient ",
             nativeQuery = true)
     public List<Patient> findAll();

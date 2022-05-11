@@ -7,7 +7,7 @@
             Загрузка...
         </div>
         <div *ngIf="!isloading">
-            Рассчитанный диагноз: {{ this.calculateDiagnoses[0].description }}
+            Рассчитанный диагноз: {{ this.calculateDiagnoses[0].name }}
             , с вероятностью = {{ this.calculateDiagnoses[0].probability.toPrecision(2) }}
         </div>
 
@@ -25,7 +25,7 @@
                 <tbody>
                 <tr *ngFor="let diagnosis of calculateDiagnoses; let i = index">
                     <td> {{i+1}} </td>
-                    <td> {{ diagnosis.description }} </td>
+                    <td> {{ diagnosis.name }} </td>
                     <td> {{ diagnosis.probability.toPrecision(2) }} </td>
                 </tr>
                 </tbody>

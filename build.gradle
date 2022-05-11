@@ -4,7 +4,9 @@ plugins {
 	id 'java'
 }
 
+// Для Heroku, так как jar перекрывает bootJar и не запускается
 jar.enabled = false
+
 group = 'ru.byk0v'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
@@ -32,14 +34,6 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-//jar {
-//	manifest {
-//		attributes(
-//				'Main-Class': 'ru.byk0v.expert_system.ExpertSystemApplication'
-//		)
-//	}
-//}
-
 jar {
 	manifest {
 		attributes(
@@ -50,18 +44,7 @@ jar {
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 	from {
-		configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 		configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 	}
 }
-
-//task fatJar(type: Jar) {
-//	manifest {
-//		attributes 'Main-Class': 'ru.byk0v.expert_system.ExpertSystemApplication'
-//	}
-////	baseName = project.name + '-all'
-//	from {
-//		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-//	}
-//	with jar
-//}

@@ -13,7 +13,7 @@ import {CalculateResponceModel} from "./model/calculate-responce.model";
 export class HttpService {
 
     protected apiUrls = {
-        base: 'https://bykov-expert-system.herokuapp.com',
+        base: 'http://localhost:8080',
         patientList: '/patients',
         patientById: '/patient',
         symptomList: '/symptoms',

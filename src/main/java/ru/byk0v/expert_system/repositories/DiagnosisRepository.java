@@ -10,12 +10,12 @@ import java.util.Optional;
 
 @Repository
 public interface DiagnosisRepository extends CrudRepository<Diagnosis, Integer> {
-    @Query(value = "select id, description " +
+    @Query(value = "select id, name, description " +
             "from diagnosis ",
             nativeQuery = true)
     public List<Diagnosis> findAll();
 
-    @Query(value = "select id, description " +
+    @Query(value = "select id, name, description " +
             "from diagnosis join patient_diagnosis " +
             "on patient_diagnosis.id_p = ?1 and diagnosis.id = patient_diagnosis.id_d",
             nativeQuery = true)

@@ -9,6 +9,7 @@ public class DiagnosisDto {
     // unique
     private Integer id;
 
+    private String name;
     private String description;
 
     // Вероятность диагноза
@@ -16,6 +17,7 @@ public class DiagnosisDto {
 
     public DiagnosisDto(Diagnosis diagnosis) {
         this.id = diagnosis.getId();
+        this.name = diagnosis.getName();
         this.description = diagnosis.getDescription();
     }
 }
