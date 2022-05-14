@@ -19,16 +19,16 @@ public interface PatientRepository extends CrudRepository<Patient, Integer> {
     /*
         Пациенты с диагнозом Di (β1)
      */
-    @Query(value = "SELECT id, name, surname, age " +
-            "FROM patient JOIN patient_diagnosis " +
-            "ON patient_diagnosis.id_p = patient.id AND patient_diagnosis.id_d = ?1",
+    @Query(value = "SELECT id, name, surname, age, diagnosis " +
+            "FROM patient " +
+            "WHERE diagnosis =  ?1",
             nativeQuery = true)
     public List<Patient> patientsWithDiagnosisById(int diagnosisId);
 
     /*
         Пациенты с диагнозом Di и с симптомом A (α1)
      */
-    @Query(value = "SELECT id, name, surname, age " +
+    @Query(value = "SELECT id, name, surname, age, diagnosis " +
             "FROM patient JOIN patient_symptom " +
             "ON patient_symptom.id_p = patient.id AND patient_symptom.id_s = ?2 " +
             "WHERE patient.id IN ?1",
@@ -38,16 +38,16 @@ public interface PatientRepository extends CrudRepository<Patient, Integer> {
     /*
         Пациенты БЕЗ диагноза Di (β2)
      */
-    @Query(value = "SELECT id, name, surname, age " +
-            "FROM patient JOIN patient_diagnosis " +
-            "ON patient_diagnosis.id_p = patient.id AND patient_diagnosis.id_d <> ?1",
+    @Query(value = "SELECT id, name, surname, age, diagnosis " +
+            "FROM patient " +
+            "WHERE diagnosis <> ?1",
             nativeQuery = true)
     public List<Patient> patientsWithoutDiagnosisById(int diagnosisId);
 
     /*
         Пациенты БЕЗ диагноза Di, с симптомом A (α2)
      */
-    @Query(value = "SELECT id, name, surname, age " +
+    @Query(value = "SELECT id, name, surname, age, diagnosis " +
             "FROM patient JOIN patient_symptom " +
             "ON patient_symptom.id_p = patient.id AND patient_symptom.id_s = ?2 " +
             "WHERE patient.id IN ?1",
