@@ -50,8 +50,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngIf="activePatientDiagnosis !== undefined">
-                        <td> {{ activePatientDiagnosis.name }} </td>
+                    <tr *ngIf="activeDiagnosisIndex !== -1">
+                        <td> {{ diagnoses[activeDiagnosisIndex].name }} </td>
                     </tr>
                     </tbody>
                 </table>

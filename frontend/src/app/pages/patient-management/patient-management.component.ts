@@ -7,6 +7,7 @@ import {NewPatientToServer} from "../../model/new-patient.model";
 import {ModalService} from "../../modal.service";
 import {NotificationService} from "../../notification.service";
 import {StoreService} from "../../store.service";
+import {Diagnosis} from "../../model/diagnosis.model";
 
 @Component({
     selector: 'patient-management',
@@ -16,11 +17,11 @@ import {StoreService} from "../../store.service";
 })
 export class PatientManagementComponent {
     activePatientId: number;
-    symptoms = [];
-    diagnoses = [];
+    symptoms: Symptom[] = [];
+    diagnoses: Diagnosis[] = [];
 
     // Индекс активного диагноза
-    activeDiagnosis: number = -1;
+    activeDiagnosisIndex: number = -1;
 
     editingPatient: Patient = undefined;
     editingPatientSymptoms = new Map<number, Symptom>();
@@ -41,10 +42,11 @@ export class PatientManagementComponent {
             this.notificationService.success("Приложение готово к работе");
         }
 
-        this.restService.getDiagnosesList().subscribe((data) => {
-            this.diagnoses.splice(0);
-            this.diagnoses.push(...data);
-        })
+        this.diagnoses = storeService.getDiagnoses();
+        // this.restService.getDiagnosesList().subscribe((data) => {
+        //     this.diagnoses.splice(0);
+        //     this.diagnoses.push(...data);
+        // })
 
         this.restService.getSymptomsList().subscribe((data) => {
             this.symptoms.splice(0);
@@ -57,26 +59,15 @@ export class PatientManagementComponent {
                 this.surname = patient.surname;
                 this.name = patient.name;
                 this.age = patient.age;
+
+                this.activeDiagnosisIndex = this.diagnoses.findIndex((item) => {
+                    return item.id === this.editingPatient.diagnosis_id;
+                })
             })
 
             restService.getSymptomsForPatientById(this.activePatientId).subscribe((data) => {
                 data.forEach(item => {
                     this.editingPatientSymptoms.set(item.id, item);
-                })
-            })
-
-            restService.getDiagnosisForPatientById(this.activePatientId).subscribe((data) => {
-                this.diagnoses.forEach((item, index) => {
-                    if (item.id === data.id) {
-                        this.activeDiagnosis = index;
-                        console.log('this.activeDiagnosis:', this.activeDiagnosis);
-                        console.log('index:', index);
-                        console.log('item.id:', item.id);
-                        let tmp = new Symptom();
-                        this.symptoms.push(tmp);
-                        this.symptoms.pop();
-                        console.log('activeDiagnosis:' + index);
-                    }
                 })
             })
         }
@@ -94,7 +85,7 @@ export class PatientManagementComponent {
 
         let newPatientToServer = new NewPatientToServer();
         newPatientToServer.patient = savePatient;
-        newPatientToServer.diagnosis = this.diagnoses[this.activeDiagnosis];
+        newPatientToServer.diagnosis = this.diagnoses[this.activeDiagnosisIndex];
         newPatientToServer.symptoms = saveSymptoms;
 
         this.restService.postPatient(newPatientToServer).subscribe((data) => {
@@ -114,10 +105,10 @@ export class PatientManagementComponent {
     diagnosisChecked(index: number): void {
         console.log('diagnosisChecked()');
 
-        if (this.activeDiagnosis === index) {
-            this.activeDiagnosis = -1;
+        if (this.activeDiagnosisIndex === index) {
+            this.activeDiagnosisIndex = -1;
         } else {
-            this.activeDiagnosis = index;
+            this.activeDiagnosisIndex = index;
         }
     }
 
@@ -143,19 +134,10 @@ export class PatientManagementComponent {
         this.modalService.calculateDialog(this.activePatientId, this.getCheckedSymptoms()).subscribe(data => {
             // TODO добавить больше данных
             if (data !== null && data !== undefined) {
-                // console.log('modalService.calculateDialog()');
-                // data.forEach(item => {
-                //     console.log(item);
-                // })
                 let idСalculatedDiagnosis = data[0].id;
-                this.activeDiagnosis = this.diagnoses.findIndex((element, index, array) => {
-                    if (element.id === idСalculatedDiagnosis) {
-                        return true;
-                        console.log('new index for active diagnosis: ' + index);
-                    }
-                    return false;
+                this.activeDiagnosisIndex = this.diagnoses.findIndex((element, index, array) => {
+                    return element.id === idСalculatedDiagnosis;
                 })
-
             } else {
                 // console.log('modalService.calculateDialog(): ' + null);
             }

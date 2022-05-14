@@ -34,7 +34,7 @@ public class Patient {
 //            , inverseJoinColumns = @JoinColumn(name = "id_d"))
 //    private List<Diagnosis> diagnoses;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "diagnosis", nullable=true)
     private Diagnosis diagnosis;
 

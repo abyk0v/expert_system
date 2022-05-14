@@ -3,8 +3,6 @@ package ru.byk0v.expert_system.repositories;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.byk0v.expert_system.models.Diagnosis;
-import ru.byk0v.expert_system.models.Patient;
 import ru.byk0v.expert_system.models.Symptom;
 
 import java.util.List;

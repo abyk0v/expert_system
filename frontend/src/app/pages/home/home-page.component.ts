@@ -1,8 +1,10 @@
 import { Component } from "@angular/core";
 import { HttpService } from "../../http.service";
-import {Diagnosis} from "../../model/diagnosis.model";
-import {NotificationService} from "../../notification.service";
-import {StoreService} from "../../store.service";
+import { Diagnosis } from "../../model/diagnosis.model";
+import { NotificationService } from "../../notification.service";
+import { StoreService } from "../../store.service";
+import { Patient } from "../../model/patient.model";
+import { Symptom } from "../../model/symptom.model";
 
 @Component({
     selector: 'home-page',
@@ -11,8 +13,10 @@ import {StoreService} from "../../store.service";
     providers: [HttpService]
 })
 export class HomePageComponent {
-    patients = [];
-    patientSymptoms = [];
+    patients: Patient[] = [];
+    patientSymptoms: Symptom[] = [];
+    diagnoses: Diagnosis[] = [];
+    activeDiagnosisIndex: number = -1;
     activePatientDiagnosis: Diagnosis;
 
     activeElement: number = -1;
@@ -36,6 +40,8 @@ export class HomePageComponent {
             error => {
                 this.notificationService.error("Нет связи с сервером");
             })
+
+        this.diagnoses = storeService.getDiagnoses();
     }
 
     click(index): void {
@@ -48,8 +54,8 @@ export class HomePageComponent {
             this.patientSymptoms.push(...data);
         })
 
-        this.restService.getDiagnosisForPatientById(this.patients[index].id).subscribe((data) => {
-            this.activePatientDiagnosis = data;
+        this.activeDiagnosisIndex = this.diagnoses.findIndex((item) => {
+            return item.id == this.patients[index].diagnosis_id;
         })
 
         this.isEditButtonDisabled = this.patients[index] == undefined;

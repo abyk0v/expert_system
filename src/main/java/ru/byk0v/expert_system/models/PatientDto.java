@@ -15,10 +15,13 @@ public class PatientDto {
 
     private int age;
 
+    private int diagnosis_id;
+
     public PatientDto(Patient patient) {
         this.id = patient.getId();
         this.name = patient.getName();
         this.surname = patient.getSurname();
         this.age = patient.getAge();
+        this.diagnosis_id = patient.getDiagnosis().getId();
     }
 }

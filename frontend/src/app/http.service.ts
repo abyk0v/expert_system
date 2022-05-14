@@ -53,6 +53,7 @@ export class HttpService {
         return this.http.get<Diagnosis[]>(this.apiUrls.base + this.apiUrls.diagnosisList);
     }
 
+    // TODO проверить актуальность метода
     getDiagnosisForPatientById(patientId: number): Observable<Diagnosis> {
         return this.http.get<Diagnosis>(this.apiUrls.base + this.apiUrls.diagnosisForPatientById +
             '?patient_id=' + patientId);

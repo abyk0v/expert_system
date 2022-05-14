@@ -54,7 +54,7 @@
                     </thead>
                     <tbody>
                     <tr class="tr-row" *ngFor="let diagnosis of diagnoses; let i = index" (click)="diagnosisChecked(i)">
-                        <td [ngClass]="{'active-row': i == activeDiagnosis}">
+                        <td [ngClass]="{'active-row': i == activeDiagnosisIndex}">
                             {{ diagnosis.name }}
                         </td>
                     </tr>
