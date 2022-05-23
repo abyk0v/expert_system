@@ -44,5 +44,8 @@ public class GenerationService {
         });
 
         patientRepository.saveAll(patientList);
+        System.out.print("GenerationService.patientsForAllDiagnoses() - END. ");
+        System.out.print("Сгенерировано: " + patientList.size() + " - пациентов");
+        System.out.println(", для " + diagnoses.size() + " - диагнозов");
     }
 }

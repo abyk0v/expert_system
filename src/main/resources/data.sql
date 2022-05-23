@@ -2,7 +2,7 @@
 -- и предназначен для заполнения таблиц БД
 
 -- Данные по пациентам
-MERGE INTO patient (id, name, surname, age) KEY (ID) VALUES (1, 'Алексей', 'Аксенов', 55);
+-- MERGE INTO patient (id, name, surname, age) KEY (ID) VALUES (1, 'Алексей', 'Аксенов', 55);
 MERGE INTO patient (id, name, surname, age) KEY (ID) VALUES (2, 'Иван', 'Иванов', 21);
 MERGE INTO patient (id, name, surname, age) KEY (ID) VALUES (3, 'Петр', 'Петров', 43);
 MERGE INTO patient (id, name, surname, age) KEY (ID) VALUES (4, 'Илья', 'Сидоров', 33);
@@ -130,7 +130,7 @@ MERGE INTO patient_symptom KEY (id_p, id_s) VALUES (7, 5);
 MERGE INTO patient_symptom KEY (id_p, id_s) VALUES (7, 3);
 
 -- СВЯЗЫВАЕМ ПАЦИЕНТА С ДИАГНОЗОМ
-UPDATE patient SET diagnosis = 1 WHERE ID = 1;
+-- UPDATE patient SET diagnosis = 1 WHERE ID = 1;
 UPDATE patient SET diagnosis = 1 WHERE ID = 2;
 UPDATE patient SET diagnosis = 1 WHERE ID = 3;
 UPDATE patient SET diagnosis = 2 WHERE ID = 4;

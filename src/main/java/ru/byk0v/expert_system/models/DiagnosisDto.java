@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DiagnosisDto {
+public class DiagnosisDto implements Comparable<DiagnosisDto> {
     // unique
     private Integer id;
 
@@ -19,5 +19,10 @@ public class DiagnosisDto {
         this.id = diagnosis.getId();
         this.name = diagnosis.getName();
         this.description = diagnosis.getDescription();
+    }
+
+    @Override
+    public int compareTo(DiagnosisDto diagnosisDto) {
+        return this.probability.compareTo(diagnosisDto.getProbability());
     }
 }
