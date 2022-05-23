@@ -45,6 +45,10 @@ public class Symptom {
         this.description = description;
     }
 
+    public Symptom(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Symptom{" +

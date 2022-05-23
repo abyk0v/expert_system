@@ -1,29 +1,92 @@
 package ru.byk0v.expert_system.calculations;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.byk0v.expert_system.models.Patient;
+import ru.byk0v.expert_system.models.Symptom;
+import ru.byk0v.expert_system.repositories.PatientRepository;
+import ru.byk0v.expert_system.repositories.SymptomRepository;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instances;
 
+import javax.annotation.PostConstruct;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class NeuralNetworkService {
 
-    NeuralNetworkService() {
-        System.out.println("NeuralNetworkService.NeuralNetworkService()");
+    private SymptomRepository symptomRepository;
+    private PatientRepository patientRepository;
+
+    @PostConstruct
+    private void init() {
+        System.out.println("NeuralNetworkService.init()");
         //Instance of NN
         MultilayerPerceptron mlp = new MultilayerPerceptron();
         //Setting Parameters
         mlp.setLearningRate(0.1);
         mlp.setMomentum(0.2);
         mlp.setTrainingTime(2000);
-        mlp.setHiddenLayers("3  ");
+        mlp.setHiddenLayers("3");
+//        mlp.setGUI(true);
 //        mlp.buildClassifier(train);
+
+        try {
+            Instances trainingSet = getInstances_TEST();
+//            mlp.buildClassifier(trainingSet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("NeuralNetworkService.init() - END");
     }
 
-    public static void main(String[] args) throws Exception {
+    public Instances getInstances_TEST() {
+        ArrayList<Attribute> atts = new ArrayList<Attribute>();
+
+        List<Symptom> symptoms = symptomRepository.findAll();
+        List<Patient> patients = patientRepository.findAll();
+        for (int i = 0; i < symptoms.size(); i++) {
+            atts.add(new Attribute("symptom_" + i));
+        }
+        atts.add(new Attribute("diagnosis"));
+
+        Instances data = new Instances("test-relation", atts, 0);
+        System.out.println("data.numAttributes(): " + data.numAttributes());
+        for (int i = 0; i < patients.size(); i++) {
+            double[] vals = new double[data.numAttributes()];
+            for (int j = 0; j < data.numAttributes()-1; j++) {
+                if (patients.get(i).getSymptoms().contains(new Symptom(j))) {
+                    vals[j] = 1;
+                } else {
+                    vals[j] = 0;
+                }
+            }
+            vals[data.numAttributes()-1] = patients.get(i).getDiagnosis().getId();
+//            DenseInstance ins = new DenseInstance()
+//            data.attribute(i).add
+            data.add(new DenseInstance(1.0, vals));
+        }
+
+        System.out.println(data);
+
+        try(FileWriter writer = new FileWriter("MY.arff", false))
+        {
+            writer.write(data.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
+    public Instances getInstances() throws Exception {
         ArrayList<Attribute>	atts;
         ArrayList<Attribute>	attsRel;
         ArrayList<String>       attVals;
@@ -36,18 +99,18 @@ public class NeuralNetworkService {
 
         // 1. set up attributes
         atts = new ArrayList<Attribute>();
-        // - numeric
+        // -- numeric
         atts.add(new Attribute("att1"));
-        // - nominal
+        // -- nominal
         attVals = new ArrayList<String>();
         for (i = 0; i < 5; i++)
             attVals.add("val" + (i+1));
         atts.add(new Attribute("att2", attVals));
-        // - string
+        // -- string
         atts.add(new Attribute("att3", (ArrayList<String>) null));
-        // - date
+        // -- date
         atts.add(new Attribute("att4", "yyyy-MM-dd"));
-        // - relational
+        // -- relational
         attsRel = new ArrayList<Attribute>();
         // -- numeric
         attsRel.add(new Attribute("att5.1"));
@@ -117,5 +180,6 @@ public class NeuralNetworkService {
 
         // 4. output data
         System.out.println(data);
+        return data;
     }
 }
