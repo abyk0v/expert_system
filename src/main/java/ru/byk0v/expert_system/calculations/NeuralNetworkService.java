@@ -1,10 +1,11 @@
 package ru.byk0v.expert_system.calculations;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.byk0v.expert_system.models.Diagnosis;
 import ru.byk0v.expert_system.models.Patient;
 import ru.byk0v.expert_system.models.Symptom;
+import ru.byk0v.expert_system.repositories.DiagnosisRepository;
 import ru.byk0v.expert_system.repositories.PatientRepository;
 import ru.byk0v.expert_system.repositories.SymptomRepository;
 import weka.classifiers.functions.MultilayerPerceptron;
@@ -23,10 +24,17 @@ public class NeuralNetworkService {
 
     private SymptomRepository symptomRepository;
     private PatientRepository patientRepository;
+    private DiagnosisRepository diagnosisRepository;
+
+    // Если при создании передавать этот список, тоак не работает
+    private List<String> symptomValues;
+    private List<String> save_diagnosisValues;
 
     @PostConstruct
     private void init() {
         System.out.println("NeuralNetworkService.init()");
+        symptomValues = List.of("True", "False");
+
         //Instance of NN
         MultilayerPerceptron mlp = new MultilayerPerceptron();
         //Setting Parameters
@@ -51,11 +59,17 @@ public class NeuralNetworkService {
         ArrayList<Attribute> atts = new ArrayList<Attribute>();
 
         List<Symptom> symptoms = symptomRepository.findAll();
+        List<Diagnosis> diagnoses = diagnosisRepository.findAll();
         List<Patient> patients = patientRepository.findAll();
         for (int i = 0; i < symptoms.size(); i++) {
-            atts.add(new Attribute("symptom_" + i));
+            atts.add(new Attribute("symptom_" + i, List.of("True", "False")));
         }
-        atts.add(new Attribute("diagnosis"));
+        List<String> diagnosisValues = new ArrayList<>(diagnoses.size());
+        diagnoses.forEach(item -> {
+            diagnosisValues.add(item.getName());
+        });
+        atts.add(new Attribute("diagnosis", diagnosisValues));
+        save_diagnosisValues = diagnosisValues;
 
         Instances data = new Instances("test-relation", atts, 0);
         System.out.println("data.numAttributes(): " + data.numAttributes());
@@ -63,14 +77,12 @@ public class NeuralNetworkService {
             double[] vals = new double[data.numAttributes()];
             for (int j = 0; j < data.numAttributes()-1; j++) {
                 if (patients.get(i).getSymptoms().contains(new Symptom(j))) {
-                    vals[j] = 1;
+                    vals[j] = symptomValues.indexOf("True");
                 } else {
-                    vals[j] = 0;
+                    vals[j] = symptomValues.indexOf("False");
                 }
             }
-            vals[data.numAttributes()-1] = patients.get(i).getDiagnosis().getId();
-//            DenseInstance ins = new DenseInstance()
-//            data.attribute(i).add
+            vals[data.numAttributes()-1] = save_diagnosisValues.indexOf(patients.get(i).getDiagnosis().getName());
             data.add(new DenseInstance(1.0, vals));
         }
 
