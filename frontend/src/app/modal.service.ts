@@ -16,8 +16,9 @@ export class ModalService {
         private ngbModal: NgbModal
     ) {}
 
-    calculateDialog(patientId: number, symptoms: Symptom[]): Observable<Diagnosis[]> {
+    calculateDialog(type: string, patientId: number, symptoms: Symptom[]): Observable<Diagnosis[]> {
         const modalRef: NgbModalRef = this.ngbModal.open(CalculateModalComponent, this.defaultOptions);
+        modalRef.componentInstance.type = type;
         modalRef.componentInstance.patientId = patientId;
         modalRef.componentInstance.symptoms = symptoms;
 

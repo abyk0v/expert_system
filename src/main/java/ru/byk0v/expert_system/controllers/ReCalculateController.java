@@ -21,4 +21,16 @@ public class ReCalculateController {
         Double accuracy = reCalculateService.reCalculate();
         return new ReCalculateResponce(accuracy);
     }
+
+    @GetMapping("/NS/diagnoses")
+    public ReCalculateResponce reCalculateNS() {
+        Double accuracy = reCalculateService.reCalculateNS();
+        return new ReCalculateResponce(accuracy);
+    }
+
+    @GetMapping("/decision-tree/diagnoses")
+    public ReCalculateResponce reCalculateDecisionTree() {
+        Double accuracy = reCalculateService.reCalculateDecisionTree();
+        return new ReCalculateResponce(accuracy);
+    }
 }

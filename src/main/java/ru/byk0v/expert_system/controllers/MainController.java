@@ -17,7 +17,7 @@ import ru.byk0v.expert_system.models.Diagnosis;
 import ru.byk0v.expert_system.models.DiagnosisDto;
 import ru.byk0v.expert_system.models.Patient;
 import ru.byk0v.expert_system.models.PatientDto;
-import ru.byk0v.expert_system.models.PationAddRequest;
+import ru.byk0v.expert_system.models.PatientAddRequest;
 import ru.byk0v.expert_system.models.Responce;
 import ru.byk0v.expert_system.models.Symptom;
 import ru.byk0v.expert_system.models.SymptomDto;
@@ -98,7 +98,7 @@ public class MainController {
     }
 
     @PostMapping("/patient")
-    public PatientDto addPatient(@RequestBody PationAddRequest pationAddRequest) {
+    public PatientDto addPatient(@RequestBody PatientAddRequest pationAddRequest) {
         Patient savePatient = new Patient();
         savePatient.setId(pationAddRequest.getPatient().getId());
         savePatient.setName(pationAddRequest.getPatient().getName());

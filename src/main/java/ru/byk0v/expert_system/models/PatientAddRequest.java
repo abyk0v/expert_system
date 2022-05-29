@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class PationAddRequest {
+public class PatientAddRequest {
     private PatientDto patient;
     private DiagnosisDto diagnosis;
     private List<SymptomDto> symptoms;

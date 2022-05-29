@@ -125,13 +125,12 @@ export class PatientManagementComponent {
     }
 
     calculate(): void {
-        console.log('calculate(): void {}')
         if (this.symptoms.length == 0) {
             console.log('Список симптомов пуст. Выберите симптомы!');
             return;
         }
 
-        this.modalService.calculateDialog(this.activePatientId, this.getCheckedSymptoms()).subscribe(data => {
+        this.modalService.calculateDialog('Bayes', this.activePatientId, this.getCheckedSymptoms()).subscribe(data => {
             // TODO добавить больше данных
             if (data !== null && data !== undefined) {
                 let idСalculatedDiagnosis = data[0].id;
@@ -142,6 +141,48 @@ export class PatientManagementComponent {
                 // console.log('modalService.calculateDialog(): ' + null);
             }
         })
+    }
+
+    // Расчет диагноза с помощью нейронной сети
+    calculateNS(): void {
+        if (this.symptoms.length == 0) {
+            console.log('Список симптомов пуст. Выберите симптомы!');
+            return;
+        }
+
+        this.modalService.calculateDialog('NS', this.activePatientId, this.getCheckedSymptoms())
+            .subscribe(data => {
+                // TODO добавить больше данных
+                if (data !== null && data !== undefined) {
+                    let idСalculatedDiagnosis = data[0].id;
+                    this.activeDiagnosisIndex = this.diagnoses.findIndex((element, index, array) => {
+                        return element.id === idСalculatedDiagnosis;
+                    })
+                } else {
+                    // console.log('modalService.calculateDialog(): ' + null);
+                }
+            })
+    }
+
+    // Расчет диагноза с помощью DecisionTree
+    calculateDecisionTree(): void {
+        if (this.symptoms.length == 0) {
+            console.log('Список симптомов пуст. Выберите симптомы!');
+            return;
+        }
+
+        this.modalService.calculateDialog('DecisionTree', this.activePatientId, this.getCheckedSymptoms())
+            .subscribe(data => {
+                // TODO добавить больше данных
+                if (data !== null && data !== undefined) {
+                    let idСalculatedDiagnosis = data[0].id;
+                    this.activeDiagnosisIndex = this.diagnoses.findIndex((element, index, array) => {
+                        return element.id === idСalculatedDiagnosis;
+                    })
+                } else {
+                    // console.log('modalService.calculateDialog(): ' + null);
+                }
+            })
     }
 
     // Получить выбранные симптомы

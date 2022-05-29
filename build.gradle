@@ -9,7 +9,7 @@ jar.enabled = false
 
 group = 'ru.byk0v'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 configurations {
 	compileOnly {

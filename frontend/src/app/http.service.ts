@@ -22,7 +22,10 @@ export class HttpService {
         diagnosisForPatientById: '/diagnosis-for-patient-by-id',
 
         patient: '/patient',
-        calculate: '/calculate'
+        calculate: '/calculate',
+
+        calculateNS: '/neural-network/calculate',
+        calculateDecisionTree: '/decision-tree/calculate'
     };
 
     constructor(private http: HttpClient){}
@@ -71,5 +74,16 @@ export class HttpService {
     calculate(patientId: number, symptoms: Symptom[]): Observable<CalculateResponceModel> {
         let request = new CalculateRequestModel(patientId, symptoms);
         return this.http.post<CalculateResponceModel>(this.apiUrls.base + this.apiUrls.calculate, request);
+    }
+
+    calculateNS(patientId: number, symptoms: Symptom[]): Observable<CalculateResponceModel> {
+        let request = new CalculateRequestModel(patientId, symptoms);
+        return this.http.post<CalculateResponceModel>(this.apiUrls.base + this.apiUrls.calculateNS, request);
+    }
+
+    calculateDecisionTree(patientId: number, symptoms: Symptom[]): Observable<CalculateResponceModel> {
+        let request = new CalculateRequestModel(patientId, symptoms);
+        return this.http.post<CalculateResponceModel>(
+            this.apiUrls.base + this.apiUrls.calculateDecisionTree, request);
     }
 }

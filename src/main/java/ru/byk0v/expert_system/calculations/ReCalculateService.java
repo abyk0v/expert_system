@@ -19,6 +19,8 @@ public class ReCalculateService {
 
     private PatientRepository patientRepository;
     private CalculateService calculateService;
+    private NeuralNetworkService neuralNetworkService;
+    private DecisionTreeServices decisionTreeServices;
 
     public Double reCalculate() {
         List<Patient> patients = patientRepository.findAll();
@@ -27,15 +29,74 @@ public class ReCalculateService {
         for (Patient patient: patients) {
             CalculateResponce result =
                     calculateService.calculate(new CalculateRequest(patient.getId(), patient.getSymptoms()));
-            System.out.print("patient.id: " + patient.getId());
+            System.out.print(patient.getId() + " ");
             Optional<DiagnosisDto> diagnosisDto = result.getDiagnoses()
                     .stream().sorted(Comparator.reverseOrder()).findFirst();
             if (diagnosisDto.isPresent()) {
                 DiagnosisDto diagnosisDtoItem = diagnosisDto.get();
 
-                System.out.print(", current diagnosis: " + patient.getDiagnosis().getName());
-                System.out.println(", calculate diagnosis: " + patient.getDiagnosis().getName());
-                System.out.println("------------------------------------------------------------------------------");
+//                System.out.print(", current diagnosis: " + patient.getDiagnosis().getName());
+//                System.out.println(", calculate diagnosis: " + patient.getDiagnosis().getName());
+//                System.out.println("------------------------------------------------------------------------------");
+
+                if (diagnosisDtoItem.getId() != null &&
+                        !diagnosisDtoItem.getId().equals(patient.getDiagnosis().getId())) {
+                    numberOfError++;
+                }
+            }
+        }
+
+        System.out.println();
+        System.out.print("numberOfError: " + numberOfError);
+        System.out.println(", general number: " + patients.size());
+        return 0.0;
+    }
+
+    public Double reCalculateNS() {
+        List<Patient> patients = patientRepository.findAll();
+
+        int numberOfError = 0;
+        for (Patient patient: patients) {
+            CalculateResponce result =
+                    neuralNetworkService.calculate(new CalculateRequest(patient.getId(), patient.getSymptoms()));
+//            System.out.print("patient.id: " + patient.getId());
+            Optional<DiagnosisDto> diagnosisDto = result.getDiagnoses()
+                    .stream().sorted(Comparator.reverseOrder()).findFirst();
+            if (diagnosisDto.isPresent()) {
+                DiagnosisDto diagnosisDtoItem = diagnosisDto.get();
+
+//                System.out.print(", current diagnosis: " + patient.getDiagnosis().getName());
+//                System.out.println(", calculate diagnosis: " + diagnosisDtoItem.getName());
+//                System.out.println("------------------------------------------------------------------------------");
+
+                if (diagnosisDtoItem.getId() != null &&
+                        !diagnosisDtoItem.getId().equals(patient.getDiagnosis().getId())) {
+                    numberOfError++;
+                }
+            }
+        }
+
+        System.out.print("numberOfError: " + numberOfError);
+        System.out.println(", general number: " + patients.size());
+        return 0.0;
+    }
+
+    public Double reCalculateDecisionTree() {
+        List<Patient> patients = patientRepository.findAll();
+
+        int numberOfError = 0;
+        for (Patient patient: patients) {
+            CalculateResponce result =
+                    decisionTreeServices.calculate(new CalculateRequest(patient.getId(), patient.getSymptoms()));
+//            System.out.print("patient.id: " + patient.getId());
+            Optional<DiagnosisDto> diagnosisDto = result.getDiagnoses()
+                    .stream().sorted(Comparator.reverseOrder()).findFirst();
+            if (diagnosisDto.isPresent()) {
+                DiagnosisDto diagnosisDtoItem = diagnosisDto.get();
+
+//                System.out.print(", current diagnosis: " + patient.getDiagnosis().getName());
+//                System.out.println(", calculate diagnosis: " + diagnosisDtoItem.getName());
+//                System.out.println("------------------------------------------------------------------------------");
 
                 if (diagnosisDtoItem.getId() != null &&
                         !diagnosisDtoItem.getId().equals(patient.getDiagnosis().getId())) {

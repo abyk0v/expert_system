@@ -11,6 +11,8 @@ import {Diagnosis} from "../../model/diagnosis.model";
 })
 export class CalculateModalComponent implements OnInit {
 
+    // выделить в enum, пока: 'Bayes', 'NS' и 'DecisionTree'
+    @Input() type: String;
     @Input() patientId: number;
     @Input() symptoms: Symptom[];
 
@@ -28,7 +30,17 @@ export class CalculateModalComponent implements OnInit {
     ) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        if (this.type != undefined && this.type == 'Bayes') {
+            this.bayes();
+        } else if (this.type != undefined && this.type == 'NS') {
+            this.NS();
+        } else if (this.type != undefined && this.type == 'DecisionTree') {
+            this.DecisionTree();
+        }
+    }
+
+    bayes(): void {
         this.httpService.calculate(this.patientId, this.symptoms).subscribe((data) => {
             this.isloading = false;
             // сортанем
@@ -47,6 +59,47 @@ export class CalculateModalComponent implements OnInit {
             // data.diagnoses.forEach(item => {
             //     console.log('CalculateModalComponent.ngOnInit(): ' + item.description + ', ' + item.probability);
             // })
+        })
+    }
+
+    NS(): void {
+        this.httpService.calculateNS(this.patientId, this.symptoms).subscribe((data) => {
+            this.isloading = false;
+            // сортанем
+            data.diagnoses.sort((a, b) => {
+                if (a.probability > b.probability) {
+                    return -1;
+                }
+                if (a.probability < b.probability) {
+                    return 1;
+                }
+                // a должно быть равным b
+                return 0;
+            })
+
+            this.calculateDiagnoses = data.diagnoses;
+            // data.diagnoses.forEach(item => {
+            //     console.log('CalculateModalComponent.ngOnInit(): ' + item.description + ', ' + item.probability);
+            // })
+        })
+    }
+
+    DecisionTree(): void {
+        this.httpService.calculateDecisionTree(this.patientId, this.symptoms).subscribe((data) => {
+            this.isloading = false;
+            // сортанем
+            data.diagnoses.sort((a, b) => {
+                if (a.probability > b.probability) {
+                    return -1;
+                }
+                if (a.probability < b.probability) {
+                    return 1;
+                }
+                // a должно быть равным b
+                return 0;
+            })
+
+            this.calculateDiagnoses = data.diagnoses;
         })
     }
 

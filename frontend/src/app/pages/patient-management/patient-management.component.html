@@ -71,8 +71,12 @@
             <input *ngIf="activePatientId === undefined" class="button" type="button" value="Добавить (save)"
                    (click)="addPatient()">
 
-            <input class="button" type="button" value="Рассчитать диагноз"
+            <input class="button" type="button" value="Рассчитать диагноз (правило Байеса)"
                    [class.disabled]="isCalculateDisabled()" (click)="calculate()">
+            <input class="button" type="button" value="Рассчитать (мultilayer perceptron)"
+                   [class.disabled]="isCalculateDisabled()" (click)="calculateNS()">
+            <input class="button" type="button" value="Рассчитать (Дерево решений, J48)"
+                   [class.disabled]="isCalculateDisabled()" (click)="calculateDecisionTree()">
         </div>
     </div>
 </div>

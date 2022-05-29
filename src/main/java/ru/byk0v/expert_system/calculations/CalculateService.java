@@ -35,15 +35,15 @@ public class CalculateService {
 
         // Вычисляем вероятности для каждого диагноза
         for (DiagnosisDto d: P_Di) {
-            System.out.println("------------------------- Диагноз: " + d.getName());
+//            System.out.println("------------------------- Диагноз: " + d.getName());
             for (Symptom a: A) {
                 double result = formula_one(d, a);
                 if (a.getDescription().length() > 10) {
-                    System.out.println("А: " + a.getDescription().substring(0, 10) + "... - p(D_i) = " +
-                            new DecimalFormat("#0.0000").format(result));
+//                    System.out.println("А: " + a.getDescription().substring(0, 10) + "... - p(D_i) = " +
+//                            new DecimalFormat("#0.0000").format(result));
                 } else {
-                    System.out.println("А: " + a.getDescription() + "- p(D_i) = " +
-                            new DecimalFormat("#0.0000").format(result));
+//                    System.out.println("А: " + a.getDescription() + "- p(D_i) = " +
+//                            new DecimalFormat("#0.0000").format(result));
                 }
 
                 if (result == 0.0 || Double.isNaN(result)) {
@@ -54,11 +54,11 @@ public class CalculateService {
             for (Symptom b: B) {
                 double result = formula_two(d, b);
                 if (b.getDescription().length() > 10) {
-                    System.out.println("B: " + b.getDescription().substring(0, 10) + "... - p(D_i) = " +
-                            new DecimalFormat("#0.0000").format(result));
+//                    System.out.println("B: " + b.getDescription().substring(0, 10) + "... - p(D_i) = " +
+//                            new DecimalFormat("#0.0000").format(result));
                 } else {
-                    System.out.println("B: " + b.getDescription() + "- p(D_i) = " +
-                            new DecimalFormat("#0.0000").format(result));
+//                    System.out.println("B: " + b.getDescription() + "- p(D_i) = " +
+//                            new DecimalFormat("#0.0000").format(result));
                 }
 //                System.out.println("B: " + b.getDescription().substring(0, 10) + " - p(D_i) " + result);
                 if (result == 0.0 || Double.isNaN(result)) {

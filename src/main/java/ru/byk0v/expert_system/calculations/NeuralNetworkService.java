@@ -1,53 +1,76 @@
 package ru.byk0v.expert_system.calculations;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.byk0v.expert_system.models.Diagnosis;
-import ru.byk0v.expert_system.models.Patient;
-import ru.byk0v.expert_system.models.Symptom;
+import ru.byk0v.expert_system.models.*;
 import ru.byk0v.expert_system.repositories.DiagnosisRepository;
 import ru.byk0v.expert_system.repositories.PatientRepository;
 import ru.byk0v.expert_system.repositories.SymptomRepository;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
+import weka.core.Instance;
 import weka.core.Instances;
 
 import javax.annotation.PostConstruct;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class NeuralNetworkService {
 
+    @Autowired
     private SymptomRepository symptomRepository;
+    @Autowired
     private PatientRepository patientRepository;
+    @Autowired
     private DiagnosisRepository diagnosisRepository;
+    @Autowired
+    private DatasetService datasetService;
 
-    // Если при создании передавать этот список, тоак не работает
+    // Если при создании передавать этот список, то так не работает
     private List<String> symptomValues;
     private List<String> save_diagnosisValues;
+
+    private MultilayerPerceptron multilayerPerceptron;
+    private List<Diagnosis> diagnoses;
 
     @PostConstruct
     private void init() {
         System.out.println("NeuralNetworkService.init()");
-        symptomValues = List.of("True", "False");
+        symptomValues = List.of("False", "True");
+        diagnoses = diagnosisRepository.findAll();
 
         //Instance of NN
-        MultilayerPerceptron mlp = new MultilayerPerceptron();
-        //Setting Parameters
-        mlp.setLearningRate(0.1);
-        mlp.setMomentum(0.2);
-        mlp.setTrainingTime(2000);
-        mlp.setHiddenLayers("3");
+        multilayerPerceptron = new MultilayerPerceptron();
+//        Setting Parameters
+//        mlp.setLearningRate(0.3);
+//        mlp.setMomentum(0.3);
+//        mlp.setTrainingTime(2000);
+        multilayerPerceptron.setTrainingTime(1000);
+        multilayerPerceptron.setHiddenLayers("3,3");
 //        mlp.setGUI(true);
 //        mlp.buildClassifier(train);
 
         try {
-            Instances trainingSet = getInstances_TEST();
-//            mlp.buildClassifier(trainingSet);
+//            Instances trainingSet = getInstances_TEST();
+            Instances trainingSet = datasetService.getDataset();
+            multilayerPerceptron.buildClassifier(trainingSet);
+
+            var test = trainingSet.get(0);
+            System.out.println(test.attribute(25));
+            double[] rrr =  multilayerPerceptron.distributionForInstance(test);
+
+            System.out.print("rrr: ");
+            for (int i = 0; i < rrr.length; i++) {
+                System.out.print(rrr[i] + " ");
+            }
+            System.out.println();
+
+            // 2
+            double eval =  multilayerPerceptron.classifyInstance(test);
+            System.out.println("eval: " + eval);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,47 +78,92 @@ public class NeuralNetworkService {
         System.out.println("NeuralNetworkService.init() - END");
     }
 
-    public Instances getInstances_TEST() {
-        ArrayList<Attribute> atts = new ArrayList<Attribute>();
+//    public Instances getInstances_TEST() {
+//        ArrayList<Attribute> atts = new ArrayList<Attribute>();
+//
+//        List<Symptom> symptoms = symptomRepository.findAll();
+////        List<Diagnosis> diagnoses = diagnosisRepository.findAll();
+//        List<Patient> patients = patientRepository.findAll();
+//        for (int i = 0; i < symptoms.size(); i++) {
+//            atts.add(new Attribute("symptom_" + i, List.of("False", "True")));
+//        }
+//        List<String> diagnosisValues = new ArrayList<>(diagnoses.size());
+//        diagnoses.forEach(item -> {
+//            diagnosisValues.add(item.getName());
+//        });
+//        atts.add(new Attribute("diagnosis", diagnosisValues));
+//        save_diagnosisValues = diagnosisValues;
+//
+//        data = new Instances("symptom-diagnosis-relation", atts, 0);
+//        System.out.println("data.numAttributes(): " + data.numAttributes());
+//        for (int i = 0; i < patients.size(); i++) {
+//            double[] vals = new double[data.numAttributes()];
+//            for (int j = 0; j < data.numAttributes()-1; j++) {
+//                if (patients.get(i).getSymptoms().contains(new Symptom(j))) {
+//                    vals[j] = symptomValues.indexOf("True");
+//                } else {
+//                    vals[j] = symptomValues.indexOf("False");
+//                }
+//            }
+//            vals[data.numAttributes()-1] = save_diagnosisValues.indexOf(patients.get(i).getDiagnosis().getName());
+//            data.add(new DenseInstance(1.0, vals));
+//        }
+//
+//        // Нужно обязательно установить атрибут класса. Данный атрибут будет выходами НС
+//        data.setClassIndex(data.numAttributes() - 1);
+//
+//        System.out.println(data);
+//
+//        try(FileWriter writer = new FileWriter("MY.arff", false))
+//        {
+//            writer.write(data.toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return data;
+//    }
 
+    public CalculateResponce calculate(CalculateRequest request) {
         List<Symptom> symptoms = symptomRepository.findAll();
-        List<Diagnosis> diagnoses = diagnosisRepository.findAll();
-        List<Patient> patients = patientRepository.findAll();
-        for (int i = 0; i < symptoms.size(); i++) {
-            atts.add(new Attribute("symptom_" + i, List.of("True", "False")));
-        }
-        List<String> diagnosisValues = new ArrayList<>(diagnoses.size());
-        diagnoses.forEach(item -> {
-            diagnosisValues.add(item.getName());
-        });
-        atts.add(new Attribute("diagnosis", diagnosisValues));
-        save_diagnosisValues = diagnosisValues;
 
-        Instances data = new Instances("test-relation", atts, 0);
-        System.out.println("data.numAttributes(): " + data.numAttributes());
-        for (int i = 0; i < patients.size(); i++) {
-            double[] vals = new double[data.numAttributes()];
-            for (int j = 0; j < data.numAttributes()-1; j++) {
-                if (patients.get(i).getSymptoms().contains(new Symptom(j))) {
-                    vals[j] = symptomValues.indexOf("True");
-                } else {
-                    vals[j] = symptomValues.indexOf("False");
-                }
+        double[] vals = new double[symptoms.size() + 1];
+        for (int i = 0; i < vals.length-1; i++) {
+            if (request.getSymptoms().contains(symptoms.get(i))) {
+                vals[i] = symptomValues.indexOf("True");
+            } else {
+                vals[i] = symptomValues.indexOf("False");
             }
-            vals[data.numAttributes()-1] = save_diagnosisValues.indexOf(patients.get(i).getDiagnosis().getName());
-            data.add(new DenseInstance(1.0, vals));
         }
+        vals[vals.length-1] = 200.0;
+        Instance instance = new DenseInstance(1.0, vals);
 
-        System.out.println(data);
-
-        try(FileWriter writer = new FileWriter("MY.arff", false))
-        {
-            writer.write(data.toString());
+        double[] results = new double[2];
+        double results2 = -22.0;
+        try {
+            results = multilayerPerceptron.distributionForInstance(instance);
+//            results2 = mlp.classifyInstance(instance);
         } catch (Exception e) {
             e.printStackTrace();
         }
+//        System.out.println("results: " + results);
+        System.out.println("results2: " + results2);
+        System.out.print("results: ");
+        for (int i = 0; i < results.length; i++) {
+            System.out.print(results[i] + " ");
+        }
+        System.out.println();
+        // todo код тут
+        System.out.println("------------------------------------------------- ok!");
 
-        return data;
+        // Формируем результат
+        List<DiagnosisDto> diagnosisDtos = new ArrayList<>(diagnoses.size());
+        for (int i = 0; i < diagnoses.size(); i++) {
+            DiagnosisDto newDto = new DiagnosisDto(diagnoses.get(i));
+            newDto.setProbability(results[i]);
+            diagnosisDtos.add(newDto);
+        }
+        return new CalculateResponce(diagnosisDtos);
     }
 
     public Instances getInstances() throws Exception {
